@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
-            R.id.action_remove_all -> {
+            R.id.action_reload -> {
                 dlv.clearItems()
                 true
             }
