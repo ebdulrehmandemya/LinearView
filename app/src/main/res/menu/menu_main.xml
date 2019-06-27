@@ -9,6 +9,21 @@
             android:icon="@drawable/ic_refresh_black_24dp"
             app:showAsAction="ifRoom"/>
 
+    <group android:id="@+id/orientation"
+           android:checkableBehavior="single">
+        <item android:id="@+id/orientation_vertical"
+              android:checked="true"
+              android:title="@string/vertical"/>
+        <item android:id="@+id/orientation_horizontal"
+              android:title="@string/horizontal"/>
+    </group>
+
+
+    <item
+            android:id="@+id/action_reverse"
+            android:orderInCategory="100"
+            android:title="@string/reverse_layout"
+            app:showAsAction="never"/>
     <item
             android:id="@+id/action_custom_page"
             android:orderInCategory="100"

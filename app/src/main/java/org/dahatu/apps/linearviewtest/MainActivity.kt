@@ -26,6 +26,11 @@ import org.dahatu.libs.linearview.OnManageListener
 
 
 class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener {
+
+    companion object {
+        const val ERROR_PAGE_CODE = 20
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,14 +38,12 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
 
         fab.setOnClickListener { view ->
             dlv.addItem(createRandomItem(), 0)
-            dlv.smoothScrollToPosition(0)
+            dlv.scrollToPosition(0)
         }
 
         Faker.with(this)
 
         dlv.onManageListener(this)
-        dlv.setSmoothScroll(true)
-
     }
 
     var index: Long = 0
@@ -75,12 +78,27 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
                 true
             }
             R.id.action_custom_page -> {
-                dlv.showPage(20)
+                dlv.showPage(ERROR_PAGE_CODE)
+                true
+            }
+            R.id.action_reverse -> {
+                dlv.setReverseLayout(!dlv.isReverseLayout())
+                true
+            }
+            R.id.orientation_horizontal -> {
+                dlv.setOrientation(LinearView.HORIZONTAL)
+                item.setChecked(true)
+                true
+            }
+            R.id.orientation_vertical -> {
+                dlv.setOrientation(LinearView.VERTICAL)
+                item.setChecked(true)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
     override fun onEmpty(): Int? = R.layout.empty
 
@@ -113,7 +131,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
     override fun onPageBind(code: Int, view: View) {
         if (code == LinearView.EMPTY_LAYOUT_CODE) {
             view.text.text = "***********************"
-        } else if (code == 20) {
+        } else if (code == ERROR_PAGE_CODE) {
             view.text.text = "<- Error : $code ->"
             view.text.setTextColor(Color.RED)
         }

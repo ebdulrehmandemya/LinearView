@@ -18,6 +18,9 @@ class LinearView : FrameLayout {
     companion object {
         const val EMPTY_LAYOUT_CODE = Int.MIN_VALUE
         const val PRELOAD_LAYOUT_CODE = Int.MIN_VALUE + 1
+
+        const val VERTICAL = RecyclerView.VERTICAL
+        const val HORIZONTAL = RecyclerView.HORIZONTAL
     }
 
     private var rv: RecyclerView by Delegates.notNull()
@@ -48,13 +51,13 @@ class LinearView : FrameLayout {
     }
 
     private fun init(attrs: AttributeSet?) {
-        var orientation = RecyclerView.VERTICAL
+        var orientation = VERTICAL
         var reverse = false
 
         attrs?.let {
             val ta = context.theme.obtainStyledAttributes(it, R.styleable.LinearView, 0, 0)
-            orientation = ta.getInteger(R.styleable.LinearView_orientation, RecyclerView.VERTICAL)
-            reverse = ta.getBoolean(R.styleable.LinearView_reverse_layout, false)
+            orientation = ta.getInteger(R.styleable.LinearView_orientation, VERTICAL)
+            reverse = ta.getBoolean(R.styleable.LinearView_reverse, false)
             ta.recycle()
         }
         ia = ItemAdapter(this)
@@ -76,7 +79,7 @@ class LinearView : FrameLayout {
 
     private fun scrollLoadMore(dx: Int, dy: Int) {
         val lm = rv.layoutManager as LinearLayoutManager
-        if (lm.orientation == RecyclerView.VERTICAL) {
+        if (lm.orientation == VERTICAL) {
             if (dy < 0) return
         } else {
             if (dx < 0) return
@@ -191,13 +194,13 @@ class LinearView : FrameLayout {
         (rv.layoutManager as LinearLayoutManager).orientation = orientation
     }
 
+    fun getOrientation() = (rv.layoutManager as LinearLayoutManager).orientation
+
     fun setReverseLayout(reverse: Boolean) {
         (rv.layoutManager as LinearLayoutManager).reverseLayout = reverse
     }
 
-    fun setSmoothScroll(smoothScroll: Boolean) {
-        (rv.layoutManager as LinearLayoutManager).isSmoothScrollbarEnabled = smoothScroll
-    }
+    fun isReverseLayout(): Boolean = (rv.layoutManager as LinearLayoutManager).reverseLayout
 
     fun addItemDecoration(decoration: RecyclerView.ItemDecoration) =
         rv.addItemDecoration(decoration)
@@ -269,4 +272,5 @@ class LinearView : FrameLayout {
 
 
     fun notifyUpdatePositions() = ia.notifyDataSetChanged()
+
 }

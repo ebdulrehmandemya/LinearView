@@ -8,4 +8,9 @@
     <string name="remove_all">Remove all</string>
     <string name="reload">Reload</string>
     <string name="show_custom_page">Show custom page</string>
+    <string name="horizental">Horizental</string>
+    <string name="horizontal">Horizontal</string>
+    <string name="vertical">Vertical</string>
+    <string name="orientation">orientation</string>
+    <string name="reverse_layout">Reverse Layout</string>
 </resources>
