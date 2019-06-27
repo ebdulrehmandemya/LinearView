@@ -5,13 +5,16 @@ import androidx.annotation.LayoutRes
 
 interface OnManageListener {
     @LayoutRes
-    fun onLayout(type: Int): Int
+    fun layout(type: Int): Int
 
     @LayoutRes
-    fun onPreload(): Int? = null
+    fun preloadLayout(): Int? = null
 
     @LayoutRes
-    fun onEmpty(): Int? = null
+    fun emptyLayout(): Int? = null
+
+    @LayoutRes
+    fun loadMoreLayout(): Int? = null
 
     fun onBind(item: Item, view: View, position: Int)
 

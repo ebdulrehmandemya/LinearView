@@ -133,8 +133,8 @@ class LinearView : FrameLayout {
     }
 
     fun addItems(items: Collection<Item>, index: Int? = null) {
-        ia.addAll(items, index)
         if (isLoading) hideLoading()
+        ia.addAll(items, index)
         updateUI()
     }
 
@@ -142,11 +142,11 @@ class LinearView : FrameLayout {
     fun updateUI() {
         if (ia.notItemAddedYet)
             dl?.let {
-                showLayout(it.onPreload(), PRELOAD_LAYOUT_CODE)
+                showLayout(it.preloadLayout(), PRELOAD_LAYOUT_CODE)
             }
         else if (ia.itemCount == 0)
             dl?.let {
-                showLayout(it.onEmpty(), EMPTY_LAYOUT_CODE)
+                showLayout(it.emptyLayout(), EMPTY_LAYOUT_CODE)
             }
         else {
             val child = getChildAt(0)

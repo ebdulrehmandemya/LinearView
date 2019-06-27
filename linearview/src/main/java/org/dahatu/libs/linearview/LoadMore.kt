@@ -8,4 +8,5 @@ internal class LoadMore : Item {
     }
 
     override fun type(): Int = LOAD_MORE_TYPE_ID
+
 }

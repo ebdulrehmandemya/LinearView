@@ -1,21 +1,16 @@
 package org.dahatu.apps.linearviewtest
 
 import android.graphics.Color
+import android.os.AsyncTask
 import android.os.Bundle
-import android.provider.CalendarContract
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import io.kimo.lib.faker.Faker
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.layout_color.view.*
 import kotlinx.android.synthetic.main.layout_text.view.*
 import org.dahatu.apps.linearviewtest.data.ItemColor
 import org.dahatu.apps.linearviewtest.data.ItemNumber
@@ -45,6 +40,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
 
         dlv.onManageListener(this)
     }
+
 
     var index: Long = 0
 
@@ -100,11 +96,17 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
     }
 
 
-    override fun onEmpty(): Int? = R.layout.empty
+    override fun emptyLayout(): Int? = R.layout.empty
 
-    override fun onPreload(): Int? = R.layout.preload
+    override fun preloadLayout(): Int? = R.layout.preload
 
-    override fun onLayout(type: Int): Int {
+    override fun hasMore(): Boolean = true
+
+    override fun onMore() {
+        Worker().execute()
+    }
+
+    override fun layout(type: Int): Int {
         when (type) {
             ItemColor.TYPE_ID -> return R.layout.layout_color
             ItemNumber.TYPE_ID -> return R.layout.layout_number
@@ -143,6 +145,28 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
 
     override fun edit(item: Item) {
         dlv.updateItemBy(item)
+    }
+
+    inner class Worker(val number: Int = 15) : AsyncTask<Void, Item, Boolean>() {
+
+        val list = mutableListOf<Item>()
+
+        override fun onProgressUpdate(vararg values: Item?) {
+            val i = values[0] as Item
+            list.add(i)
+        }
+
+        override fun doInBackground(vararg p0: Void?): Boolean {
+            Thread.sleep(2000)
+            for (i in 0 until number)
+                publishProgress(createRandomItem())
+            return true
+        }
+
+        override fun onPostExecute(result: Boolean?) {
+            dlv.addItems(list)
+        }
+
     }
 }
 
