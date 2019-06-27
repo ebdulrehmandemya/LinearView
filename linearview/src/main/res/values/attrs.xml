@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LinearView">
+        <attr name="orientation"/>
+        <!--<enum name="vertical" value="1"/>-->
+        <!--<enum name="horizontal" value="0"/>-->
+        <!--</attr>-->
+        <attr name="prefetch_item_count" format="integer"/>
+        <attr name="smooth_scroll" format="boolean"/>
+        <attr name="reverse_layout" format="boolean"/>
+    </declare-styleable>
+</resources>

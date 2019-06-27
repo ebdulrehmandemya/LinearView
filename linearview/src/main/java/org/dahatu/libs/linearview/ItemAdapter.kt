@@ -1,0 +1,101 @@
+package org.dahatu.libs.linearview
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+
+
+internal class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH>() {
+
+    private val items = mutableListOf<Item>()
+    internal var notItemAddedYet = true
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemVH {
+        val layout = when (viewType) {
+            LoadMore.LOAD_MORE_TYPE_ID -> dlv.dl!!.onEmpty() ?: R.layout.dlv_load_more
+            else -> dlv.dl!!.onLayout(viewType)
+        }
+        val view = LayoutInflater.from(dlv.context).inflate(layout, parent, false)
+        return ItemVH(view)
+    }
+
+    override fun onBindViewHolder(holder: ItemVH, position: Int) {
+        if (items[position].type() == LoadMore.LOAD_MORE_TYPE_ID) return
+        dlv.dl!!.onBind(items[position], holder.itemView, holder.adapterPosition)
+    }
+
+    override fun getItemCount(): Int = items.size
+
+    override fun getItemId(position: Int): Long = items[position].id()
+
+    override fun getItemViewType(position: Int): Int = items[position].type()
+
+    fun getItemAt(position: Int): Item? = items.getOrNull(position)
+
+    fun getItem(type: Int, id: Long): Item? {
+        for (i in 0 until items.size) {
+            val item = items[i]
+            if (item.type() == type && item.id() == id) return item
+        }
+        return null
+    }
+
+    fun getItem(compare: Comparable<Item>): Item? {
+        for (i in 0 until items.size) {
+            val item = items[i]
+            if (compare.compareTo(item) == 0) return item
+        }
+        return null
+    }
+
+    fun getPosition(type: Int, id: Long): Int? {
+        for (i in 0 until items.size) {
+            val item = items[i]
+            if (item.type() == type && item.id() == id) return i
+        }
+        return null
+    }
+
+    fun getPosition(compare: Comparable<Item>): Int? {
+        for (i in 0 until items.size) {
+            val item = items[i]
+            if (compare.compareTo(item) == 0) return i
+        }
+        return null
+    }
+
+    fun reset() {
+        items.clear()
+        notItemAddedYet = true
+        notifyDataSetChanged()
+    }
+
+    fun add(item: Item, index: Int? = null) {
+        addAll(listOf(item), index)
+    }
+
+    fun addAll(items: Collection<Item>, index: Int? = null) {
+        val pos: Int = if (index != null && index >= 0) index else this.items.size
+        this.items.addAll(pos, items)
+        notItemAddedYet = false
+        notifyItemRangeInserted(pos, items.size)
+    }
+
+    fun remove(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+
+    }
+
+    internal fun removeLastItem() {
+        remove(items.size - 1)
+    }
+
+    fun update(position: Int, item: Item) {
+        items.set(position, item)
+        notifyItemChanged(position)
+    }
+
+    inner class ItemVH(view: View) : RecyclerView.ViewHolder(view)
+}
