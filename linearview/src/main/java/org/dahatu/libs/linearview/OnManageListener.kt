@@ -17,10 +17,10 @@ interface OnManageListener {
 
     fun hasMore(): Boolean = false
 
-    fun onMore(): Nothing? = null
+    fun onMore() {}
 
     @LayoutRes
     fun onPageLayout(code: Int): Int? = null
 
-    fun onPageBind(code: Int, view: View): Nothing? = null
+    fun onPageBind(code: Int, view: View) {}
 }

@@ -7,4 +7,5 @@
     <string name="there_is_no_items">There is no items!</string>
     <string name="remove_all">Remove all</string>
     <string name="reload">Reload</string>
+    <string name="show_custom_page">Show custom page</string>
 </resources>

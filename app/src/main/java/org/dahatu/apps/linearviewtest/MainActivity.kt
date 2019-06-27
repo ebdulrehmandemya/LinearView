@@ -1,6 +1,8 @@
 package org.dahatu.apps.linearviewtest
 
+import android.graphics.Color
 import android.os.Bundle
+import android.provider.CalendarContract
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
@@ -13,10 +15,13 @@ import io.kimo.lib.faker.Faker
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.layout_color.view.*
+import kotlinx.android.synthetic.main.layout_text.view.*
 import org.dahatu.apps.linearviewtest.data.ItemColor
 import org.dahatu.apps.linearviewtest.data.ItemNumber
 import org.dahatu.apps.linearviewtest.data.ItemText
 import org.dahatu.libs.linearview.Item
+import org.dahatu.libs.linearview.LinearView
 import org.dahatu.libs.linearview.OnManageListener
 
 
@@ -69,6 +74,10 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
                 dlv.clearItems()
                 true
             }
+            R.id.action_custom_page -> {
+                dlv.showPage(20)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -94,6 +103,19 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
             is ItemColor -> ItemColor.bind(item, view, p)
             is ItemNumber -> ItemNumber.bind(item, view, p)
             is ItemText -> ItemText.bind(item, view, p)
+        }
+    }
+
+    override fun onPageLayout(code: Int): Int? {
+        return R.layout.empty
+    }
+
+    override fun onPageBind(code: Int, view: View) {
+        if (code == LinearView.EMPTY_LAYOUT_CODE) {
+            view.text.text = "***********************"
+        } else if (code == 20) {
+            view.text.text = "<- Error : $code ->"
+            view.text.setTextColor(Color.RED)
         }
     }
 

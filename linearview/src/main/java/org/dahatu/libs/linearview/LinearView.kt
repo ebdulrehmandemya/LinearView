@@ -136,7 +136,7 @@ class LinearView : FrameLayout {
     }
 
 
-    private fun updateUI() {
+    fun updateUI() {
         if (ia.notItemAddedYet)
             dl?.let {
                 showLayout(it.onPreload(), PRELOAD_LAYOUT_CODE)
