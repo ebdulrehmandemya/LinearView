@@ -98,14 +98,14 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
 
 - Override `OnManageListener` Methods
 
-| Method         | Required | arguments                             | retrun                 | Description |
-| -------------- | -------- | ------------------------------------- | ---------------------- | ----------- |
-| layout         | Yes      | type : Int                            | @LayoutRes Int         | d           |
-| onBind         | Yes      | item: Item, view: View, position: Int |                        | d           |
-| preloadLayout  | No       |                                       | @LayoutRes Int? = null | d           |
-| emptyLayout    | No       |                                       | @LayoutRes Int? = null | d           |
-| loadMoreLayout | No       |                                       | @LayoutRes Int? = null | d           |
-| hasMore        | No       |                                       | Boolean = false        | d           |
-| onMore         | No       |                                       |                        | d           |
-| onPageLayout   | No       | code: Int                             | @LayoutRes Int? = null | d           |
-| onPageBind     | No       | code: Int, view: View                 |                        | d           |
+| Method         | Required | arguments                             | retrun                 | Description                                                                            |
+| -------------- | -------- | ------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------- |
+| layout         | Yes      | type : Int                            | @LayoutRes Int         | determine the item's layout per type                                                   |
+| onBind         | Yes      | item: Item, view: View, position: Int |                        | determine how to bind item's view and item's data together                             |
+| preloadLayout  | No       |                                       | @LayoutRes Int? = null | determine a layout to show first time at once                                          |
+| emptyLayout    | No       |                                       | @LayoutRes Int? = null | determine a layout to show when LinearView goes empty (has no items)                   |
+| loadMoreLayout | No       |                                       | @LayoutRes Int? = null | determine a layout when the 'loadmore' action happens                                  |
+| hasMore        | No       |                                       | Boolean = false        | determine if there is any more items to add ( loadmore's looping condition)            |
+| onMore         | No       |                                       |                        | determine what action must be done when the loadmore calls                             |
+| onPageLayout   | No       | code: Int                             | @LayoutRes Int? = null | determine custom layouts such as showing error pages when working with Restful Api,... |
+| onPageBind     | No       | code: Int, view: View                 |                        | determine any changes in custom page view                                              |
