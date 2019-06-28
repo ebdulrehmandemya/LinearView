@@ -12,9 +12,7 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
 6. Support custom pages like empty, preload, errors, ...
 7. Support vertical & horizontal orientation
 
-## How to use
-
-### #1: Add library to your project
+### Add library to your project
 
 - Add it in your root `build.gradle` (app level) at the end of repositories:
 
@@ -38,7 +36,9 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
 
 > For other build files, see [here](https://jitpack.io/#ebdulrehmandemya/LinearView)
 
-### #2: Implementation of `Item`
+## How to use
+
+### #1: Implementation of `Item`
 
 ```kotlin
     class Note(val id: Long, val title: String) : Item {
@@ -55,7 +55,7 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
 
 > Repeat this action for other classes that you want to use them in LinearView
 
-### #3: In layout and code
+### #2: In layout and code
 
 - Add `org.dahatu.libs.linearview.LinearView` in layout
 
@@ -88,7 +88,7 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
     ...
 ```
 
-### #4: Implementation of `OnManageListener`
+### #3: Implementation of `OnManageListener`
 
 ```kotlin
     class MainActivity : AppCompatActivity(), OnManageListener {
