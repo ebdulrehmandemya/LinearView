@@ -12,7 +12,6 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
 6. Support custom pages like empty, preload, errors, ...
 7. Support vertical & horizontal orientation
 
-
 ## How to use
 
 ### #1: Add library to your project
@@ -80,7 +79,7 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        dlv.onManageListener(this)  // implement a listener, see next section
+        dlv.onManageListener(this)  // set a listener, see next section
         dlv.addItem(Note.createMock(id=1))  // add an item to LinearView
 
         val items = listOf(Note.createMock(id=2), Note.createMock(id=3))
@@ -97,7 +96,7 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
     }
 ```
 
-- `OnManageListener` Methods
+- Override `OnManageListener` Methods
 
 | Method         | Required | arguments                             | retrun                 | Description |
 | -------------- | -------- | ------------------------------------- | ---------------------- | ----------- |
