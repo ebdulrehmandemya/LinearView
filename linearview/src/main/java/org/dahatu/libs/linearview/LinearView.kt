@@ -23,8 +23,8 @@ class LinearView : FrameLayout {
         const val HORIZONTAL = RecyclerView.HORIZONTAL
     }
 
-    private var rv: RecyclerView by Delegates.notNull()
-    private var ia: ItemAdapter by Delegates.notNull()
+    private lateinit var rv: RecyclerView
+    private lateinit var ia: ItemAdapter
     internal var dl: OnManageListener? = null
     private var isLoading = false
     private var ipp = 0

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 internal class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH>() {
 
     private val items = mutableListOf<Item>()
-    internal var notItemAddedYet = true
+    var notItemAddedYet = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemVH {
         val layout = when (viewType) {
@@ -97,5 +97,5 @@ internal class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapt
         notifyItemChanged(position)
     }
 
-    inner class ItemVH(view: View) : RecyclerView.ViewHolder(view)
+    class ItemVH(view: View) : RecyclerView.ViewHolder(view)
 }
