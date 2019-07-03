@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
         Faker.with(this)
 
         dlv.onManageListener(this)
+        Worker(pause = false).execute();
     }
 
 
@@ -147,9 +148,10 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
         dlv.updateItemBy(item)
     }
 
-    inner class Worker(val number: Int = 15) : AsyncTask<Void, Item, Boolean>() {
+    inner class Worker(val number: Int = 15, val pause: Boolean = true) : AsyncTask<Void, Item, Boolean>() {
 
         val list = mutableListOf<Item>()
+        var first = true
 
         override fun onProgressUpdate(vararg values: Item?) {
             val i = values[0] as Item
@@ -157,7 +159,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
         }
 
         override fun doInBackground(vararg p0: Void?): Boolean {
-            Thread.sleep(2000)
+            if (pause) Thread.sleep(2000)
             for (i in 0 until number)
                 publishProgress(createRandomItem())
             return true
