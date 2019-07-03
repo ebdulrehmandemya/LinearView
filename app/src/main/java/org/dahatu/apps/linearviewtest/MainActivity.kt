@@ -1,5 +1,6 @@
 package org.dahatu.apps.linearviewtest
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
@@ -149,6 +150,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
         dlv.updateItemBy(item)
     }
 
+    @SuppressLint("StaticFieldLeak")
     inner class Worker(val number: Int = 15, val pause: Boolean = true) : AsyncTask<Void, Item, Boolean>() {
 
         val list = mutableListOf<Item>()
