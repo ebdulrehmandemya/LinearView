@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
             R.id.action_settings -> true
             R.id.action_reload -> {
                 dlv.clearItems()
+                Worker(pause = false).execute();
                 true
             }
             R.id.action_custom_page -> {
