@@ -8,21 +8,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import io.kimo.lib.faker.Faker
+import com.mooveit.library.Fakeit
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.layout_text.view.*
-import org.dahatu.apps.linearviewtest.data.ItemColor
-import org.dahatu.apps.linearviewtest.data.ItemNumber
-import org.dahatu.apps.linearviewtest.data.ItemText
+import kotlinx.android.synthetic.main.empty.view.*
+import org.dahatu.apps.linearviewtest.data.App
+import org.dahatu.apps.linearviewtest.data.Book
+import org.dahatu.apps.linearviewtest.data.Music
 import org.dahatu.libs.linearview.Item
 import org.dahatu.libs.linearview.LinearView
 import org.dahatu.libs.linearview.OnManageListener
 
 
 class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener {
-
     companion object {
         const val ERROR_PAGE_CODE = 20
     }
@@ -37,24 +36,22 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
             dlv.scrollToPosition(0)
         }
 
-        Faker.with(this)
+        Fakeit.init()
 
         dlv.onManageListener(this)
         Worker(pause = false).execute();
     }
 
-
     var index: Long = 0
 
     fun createRandomItem(): Item {
-        val l = listOf(0, 1, 2)
+        val l = listOf(Book.TYPE, Music.TYPE, App.TYPE)
         val i: Item = when (l.random()) {
-            ItemColor.TYPE_ID -> ItemColor(Faker.Color.randomColor(), index, this)
-            ItemNumber.TYPE_ID -> ItemNumber(Faker.Number.randomNumber().toDouble(), index, this)
-            ItemText.TYPE_ID -> ItemText(Faker.Name.randomText(), index, this)
-            else -> throw TypeCastException("Item type is unknown or not implemented!")
+            Book.TYPE -> Book.create(index++)
+            Music.TYPE -> Music.create(index++)
+            App.TYPE -> App.create(index++)
+            else -> throw IllegalArgumentException("Item type is unknown or not implemented!")
         }
-        index++
         return i;
     }
 
@@ -109,24 +106,19 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
         Worker().execute()
     }
 
-    override fun layout(type: Int): Int {
-        when (type) {
-            ItemColor.TYPE_ID -> return R.layout.layout_color
-            ItemNumber.TYPE_ID -> return R.layout.layout_number
-            ItemText.TYPE_ID -> return R.layout.layout_text
-            else -> throw TypeCastException("Type #$type is unknown or not implemented!")
-        }
+    override fun layout(type: Int): Int = when (type) {
+        Book.TYPE -> R.layout.layout_book
+        Music.TYPE -> R.layout.layout_music
+        App.TYPE -> R.layout.layout_app
+        else -> throw IllegalArgumentException("Type #$type is unknown or not implemented!")
     }
 
-    override fun onBind(item: Item, view: View, position: Int) {
-        val p = dlv.itemPositionBy(object : Comparable<Item> {
-            override fun compareTo(other: Item): Int = if (other.id() == item.id()) 0 else -1
-        }) ?: return
-        when (item) {
-            is ItemColor -> ItemColor.bind(item, view, p)
-            is ItemNumber -> ItemNumber.bind(item, view, p)
-            is ItemText -> ItemText.bind(item, view, p)
-        }
+
+    override fun onBind(item: Item, view: View, position: Int) = when (item) {
+        is Book -> Book.bind(item, view)
+        is Music -> Music.bind(item, view)
+        is App -> App.bind(item, view)
+        else -> throw IllegalArgumentException("Type #${item.type()} is unknown or not implemented!")
     }
 
     override fun onPageLayout(code: Int): Int? {

@@ -13,4 +13,20 @@
     <string name="vertical">Vertical</string>
     <string name="orientation">orientation</string>
     <string name="reverse_layout">Reverse Layout</string>
+    <string name="book">Book</string>
+    <string name="title">Title</string>
+    <string name="author">author</string>
+    <string name="publisher">Publisher</string>
+    <string name="gender">gender</string>
+    <string name="music">music</string>
+    <string name="team">Team</string>
+    <string name="chord">chord</string>
+    <string name="chord_type">chord Type</string>
+    <string name="instrument">instrument</string>
+    <string name="key">key</string>
+    <string name="key_type">key type</string>
+    <string name="application">application</string>
+    <string name="name">name</string>
+    <string name="version">version</string>
+    <string name="developer">developer</string>
 </resources>

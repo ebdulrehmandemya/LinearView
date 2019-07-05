@@ -32,7 +32,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(path: ':linearview')
-
-    implementation 'com.github.thiagokimo:faker:1.4.3'
+    implementation 'com.github.moove-it:fakeit:v0.7'
 
 }

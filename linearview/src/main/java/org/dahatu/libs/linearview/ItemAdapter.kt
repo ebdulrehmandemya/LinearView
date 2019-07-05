@@ -13,7 +13,7 @@ internal class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemVH {
         val layout = when (viewType) {
-            LoadMore.LOAD_MORE_TYPE_ID -> dlv.dl!!.loadMoreLayout() ?: R.layout.dlv_load_more
+            LoadMore.LOAD_MORE_TYPE_ID -> dlv.dl?.loadMoreLayout() ?: R.layout.dlv_load_more
             else -> dlv.dl!!.layout(viewType)
         }
         val view = LayoutInflater.from(dlv.context).inflate(layout, parent, false)
