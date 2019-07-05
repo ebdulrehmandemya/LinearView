@@ -7,6 +7,8 @@ interface OnManageListener {
     @LayoutRes
     fun layout(type: Int): Int
 
+    fun onBind(item: Item, view: View, position: Int)
+
     @LayoutRes
     fun preloadLayout(): Int? = null
 
@@ -15,8 +17,6 @@ interface OnManageListener {
 
     @LayoutRes
     fun loadMoreLayout(): Int? = null
-
-    fun onBind(item: Item, view: View, position: Int)
 
     fun hasMore(): Boolean = false
 
