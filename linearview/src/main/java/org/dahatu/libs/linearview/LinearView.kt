@@ -128,10 +128,12 @@ class LinearView : FrameLayout {
 
     fun recyclerView() = rv
 
+    @JvmOverloads
     fun addItem(item: Item, index: Int? = null) {
         addItems(listOf(item), index)
     }
 
+    @JvmOverloads
     fun addItems(items: Collection<Item>, index: Int? = null) {
         if (isLoading) hideLoading()
         ia.addAll(items, index)

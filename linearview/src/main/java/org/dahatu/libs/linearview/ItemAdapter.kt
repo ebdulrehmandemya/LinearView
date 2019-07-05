@@ -71,10 +71,12 @@ internal class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapt
         notifyDataSetChanged()
     }
 
+    @JvmOverloads
     fun add(item: Item, index: Int? = null) {
         addAll(listOf(item), index)
     }
 
+    @JvmOverloads
     fun addAll(items: Collection<Item>, index: Int? = null) {
         val pos: Int = if (index != null && index >= 0) index else this.items.size
         this.items.addAll(pos, items)

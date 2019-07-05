@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener { _ ->
             dlv.addItem(createRandomItem(), 0)
             dlv.scrollToPosition(0)
         }
