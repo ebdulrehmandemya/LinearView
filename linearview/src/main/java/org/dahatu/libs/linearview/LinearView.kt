@@ -115,18 +115,20 @@ class LinearView : FrameLayout {
         rv.smoothScrollToPosition(position)
     }
 
-    private fun startLoading() {
+    fun startLoading() {
         isLoading = true
         ia.add(LoadMore.create())
     }
 
-    private fun hideLoading() {
+    fun hideLoading() {
         if (!isLoading) return
         ia.removeLastItem()
         isLoading = false
     }
 
     fun recyclerView() = rv
+
+    fun adapter() = ia
 
     @JvmOverloads
     fun addItem(item: Item, index: Int? = null) {

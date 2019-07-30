@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-internal class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH>() {
+class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH>() {
 
     private val items = mutableListOf<Item>()
-    var notItemAddedYet = true
+    internal var notItemAddedYet = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemVH {
         val layout = when (viewType) {
