@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, OnDeleteItemListener
     @SuppressLint("StaticFieldLeak")
     inner class Worker(val number: Int = 15, val pause: Boolean = true) : AsyncTask<Void, Item, Boolean>() {
 
-        val list = mutableListOf<Item>()
+        private val list = mutableListOf<Item>()
         var first = true
 
         override fun onProgressUpdate(vararg values: Item?) {
