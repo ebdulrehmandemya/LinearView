@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 
 
-class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH>() {
+class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH>(), CoroutineScope by MainScope() {
 
     private val items = mutableListOf<Item>()
     internal var notItemAddedYet = true
@@ -65,36 +66,36 @@ class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH
         return null
     }
 
-    fun reset() = dlv.post {
+    fun reset() = launch {
         items.clear()
         notItemAddedYet = true
         notifyDataSetChanged()
     }
 
     @JvmOverloads
-    fun add(item: Item, index: Int? = null) = dlv.post {
+    fun add(item: Item, index: Int? = null) = launch {
         addAll(listOf(item), index)
     }
 
     @JvmOverloads
-    fun addAll(items: Collection<Item>, index: Int? = null) = dlv.post {
-        val pos: Int = if (index != null && index >= 0) index else this.items.size
-        this.items.addAll(pos, items)
+    fun addAll(items: Collection<Item>, index: Int? = null) = launch {
+        val pos: Int = if (index != null && index >= 0) index else this@ItemAdapter.items.size
+        this@ItemAdapter.items.addAll(pos, items)
         notItemAddedYet = false
         notifyItemRangeInserted(pos, items.size)
     }
 
-    fun remove(position: Int) = dlv.post {
+    fun remove(position: Int) = launch {
         items.removeAt(position)
         notifyItemRemoved(position)
     }
 
     fun removeLastItem() {
-        if (items.size <= 0) return
-        remove(items.size - 1)
+        if (items.size > 0)
+            remove(items.size - 1)
     }
 
-    fun update(position: Int, item: Item) = dlv.post {
+    fun update(position: Int, item: Item) = launch {
         items.set(position, item)
         notifyItemChanged(position)
     }

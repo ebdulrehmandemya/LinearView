@@ -11,7 +11,10 @@ import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.properties.Delegates
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class LinearView : FrameLayout {
 
@@ -115,13 +118,13 @@ class LinearView : FrameLayout {
         rv.smoothScrollToPosition(position)
     }
 
-    fun startLoading() = post {
+    fun startLoading() = GlobalScope.launch {
         isLoading = true
-        ia.add(LoadMore.create())
+        ia.add(LoadMore.create()).join()
     }
 
-    fun hideLoading() = post {
-        if (!isLoading) return@post
+    fun hideLoading() = GlobalScope.launch {
+        if (!isLoading) return@launch
         ia.removeLastItem()
         isLoading = false
     }
@@ -131,19 +134,23 @@ class LinearView : FrameLayout {
     fun adapter() = ia
 
     @JvmOverloads
-    fun addItem(item: Item, index: Int? = null) {
-        addItems(listOf(item), index)
+    fun addItem(item: Item, index: Int? = null) = runBlocking {
+        setItems(listOf(item), index)
     }
 
     @JvmOverloads
-    fun addItems(items: Collection<Item>, index: Int? = null) {
+    fun addItems(items: Collection<Item>, index: Int? = null) = runBlocking {
+        setItems(items, index)
+    }
+
+    private suspend fun setItems(items: Collection<Item>, index: Int? = null) = coroutineScope {
         if (isLoading) hideLoading()
         ia.addAll(items, index)
         updateUI()
     }
 
 
-    fun updateUI() = post {
+    fun updateUI() {
         if (ia.notItemAddedYet)
             dl?.let {
                 showLayout(it.preloadLayout(), PRELOAD_LAYOUT_CODE)
@@ -154,7 +161,7 @@ class LinearView : FrameLayout {
             }
         else {
             val child = getChildAt(0)
-            if (child is RecyclerView) return@post
+            if (child is RecyclerView) return
             showView(rv)
         }
     }
@@ -209,37 +216,37 @@ class LinearView : FrameLayout {
     fun addItemDecoration(decoration: RecyclerView.ItemDecoration) =
         rv.addItemDecoration(decoration)
 
-    fun clearItems() = post {
-        ia.reset()
+    fun clearItems() = runBlocking {
+        ia.reset().join()
         updateUI()
         isLoading = false
     }
 
-    fun removeAt(position: Int) {
-        ia.remove(position)
+    fun removeAt(position: Int) = runBlocking {
+        ia.remove(position).join()
         updateUI()
     }
 
-    fun removeBy(item: Item) {
+    fun removeBy(item: Item) = runBlocking {
         val p = itemPositionBy(item)
         p?.let {
-            ia.remove(it)
+            ia.remove(it).join()
             updateUI()
         }
     }
 
-    fun removeBy(type: Int, id: Long) {
+    fun removeBy(type: Int, id: Long) = runBlocking {
         val p = itemPositionBy(type, id)
         p?.let {
-            ia.remove(it)
+            ia.remove(it).join()
             updateUI()
         }
     }
 
-    fun removeBy(compare: Comparable<Item>) {
+    fun removeBy(compare: Comparable<Item>) = runBlocking {
         val p = itemPositionBy(compare)
         p?.let {
-            ia.remove(it)
+            ia.remove(it).join()
             updateUI()
         }
     }
@@ -260,17 +267,17 @@ class LinearView : FrameLayout {
 
     fun updateItemAt(position: Int, item: Item) = ia.update(position, item)
 
-    fun updateItemBy(item: Item) {
+    fun updateItemBy(item: Item) = runBlocking {
         val p = itemPositionBy(item)
         p?.let {
-            ia.update(it, item)
+            ia.update(it, item).join()
         }
     }
 
-    fun updateItemBy(item: Item, compare: Comparable<Item>) {
+    fun updateItemBy(item: Item, compare: Comparable<Item>) = runBlocking {
         val p = itemPositionBy(compare)
         p?.let {
-            ia.update(it, item)
+            ia.update(it, item).join()
         }
     }
 
