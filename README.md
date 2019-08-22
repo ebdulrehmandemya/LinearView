@@ -30,7 +30,7 @@ A powerful android library coded in kotlin. It's like recyclerview but eliminate
 ```gradle
     dependencies {
         ...
-        implementation 'com.github.ebdulrehmandemya:LinearView:v5.1'
+        implementation 'com.github.ebdulrehmandemya:LinearView:v5.2'
     }
 ```
 
