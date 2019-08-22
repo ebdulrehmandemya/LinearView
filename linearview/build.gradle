@@ -23,6 +23,7 @@ android {
         }
     }
 
+
     kotlinOptions {
         freeCompilerArgs = ['-Xjvm-default=compatibility']
         jvmTarget = '1.8'
