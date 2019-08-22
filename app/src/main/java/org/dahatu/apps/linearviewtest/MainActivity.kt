@@ -159,7 +159,6 @@ class MainActivity : AppCompatActivity(), OnManageListener, OnDeleteItemListener
     inner class Worker(val number: Int = 15, val pause: Boolean = true) : AsyncTask<Void, Item, Boolean>() {
 
         private val list = mutableListOf<Item>()
-        var first = true
 
         override fun onProgressUpdate(vararg values: Item?) {
             val i = values[0] as Item
