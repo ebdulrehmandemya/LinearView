@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.mooveit.library.Fakeit
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,7 +22,7 @@ import org.dahatu.libs.linearview.LinearView
 import org.dahatu.libs.linearview.OnManageListener
 
 
-class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener {
+class MainActivity : AppCompatActivity(), OnManageListener, OnDeleteItemListener {
     companion object {
         const val ERROR_PAGE_CODE = 20
     }
@@ -83,12 +84,12 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
             }
             R.id.orientation_horizontal -> {
                 dlv.setOrientation(LinearView.HORIZONTAL)
-                item.setChecked(true)
+                item.isChecked = true
                 true
             }
             R.id.orientation_vertical -> {
                 dlv.setOrientation(LinearView.VERTICAL)
-                item.setChecked(true)
+                item.isChecked = true
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -115,9 +116,21 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
 
 
     override fun onBind(item: Item, view: View, position: Int) = when (item) {
-        is Book -> Book.bind(item, view)
-        is Music -> Music.bind(item, view)
-        is App -> App.bind(item, view)
+        is Book -> Book.bind(item, view) {
+            it.update()
+            dlv.updateItemBy(it)
+            Toast.makeText(this, "Book is updated with new information.", Toast.LENGTH_SHORT).show()
+        }
+        is Music -> Music.bind(item, view) {
+            it.update()
+            dlv.updateItemBy(it)
+            Toast.makeText(this, "Music is updated with new information.", Toast.LENGTH_SHORT).show()
+        }
+        is App -> App.bind(item, view) {
+            it.update()
+            dlv.updateItemBy(it)
+            Toast.makeText(this, "App is updated with new information.", Toast.LENGTH_SHORT).show()
+        }
         else -> throw IllegalArgumentException("Type #${item.type()} is unknown or not implemented!")
     }
 
@@ -167,7 +180,7 @@ class MainActivity : AppCompatActivity(), OnManageListener, onDeleteItemListener
     }
 }
 
-interface onDeleteItemListener {
+interface OnDeleteItemListener {
     fun delete(item: Item)
     fun edit(item: Item)
 }

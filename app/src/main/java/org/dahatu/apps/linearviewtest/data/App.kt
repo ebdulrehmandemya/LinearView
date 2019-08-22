@@ -16,10 +16,13 @@ class App(val id: Long) : Item {
             version = Fakeit.app().version()
         }
 
-        fun bind(app: App, view: View) {
+        fun bind(app: App, view: View, onUpdate: (app: App) -> Unit) {
             view.name.text = app.name
             view.developer.text = app.developer
             view.version.text = app.version
+            view.setOnClickListener {
+                onUpdate(app)
+            }
         }
     }
 
@@ -29,4 +32,11 @@ class App(val id: Long) : Item {
 
     override fun type(): Int = TYPE
     override fun id(): Long = id
+
+    fun update() {
+        name = Fakeit.app().name()
+        developer = Fakeit.app().author()
+        version = Fakeit.app().version()
+    }
+
 }

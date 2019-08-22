@@ -17,11 +17,12 @@ class Book(val id: Long) : Item {
             gender = Fakeit.book().genre()
         }
 
-        fun bind(book: Book, view: View) {
+        fun bind(book: Book, view: View, onUpdate: (book: Book) -> Unit) {
             view.title.text = book.title
             view.publisher.text = book.publisher
             view.author.text = book.author
             view.gender.text = book.gender
+            view.setOnClickListener { onUpdate(book) }
         }
     }
 
@@ -32,4 +33,12 @@ class Book(val id: Long) : Item {
 
     override fun type(): Int = TYPE
     override fun id(): Long = id
+
+    fun update() {
+        title = Fakeit.book().title()
+        author = Fakeit.book().author()
+        publisher = Fakeit.book().publisher()
+        gender = Fakeit.book().genre()
+    }
+
 }
