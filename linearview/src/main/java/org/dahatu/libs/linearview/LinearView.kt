@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.properties.Delegates
 
 class LinearView : FrameLayout {
 
@@ -116,7 +117,7 @@ class LinearView : FrameLayout {
 
     fun startLoading() = post {
         isLoading = true
-        ia.addAll(listOf(LoadMore.create()))
+        ia.add(LoadMore.create())
     }
 
     fun hideLoading() = post {
@@ -131,16 +132,11 @@ class LinearView : FrameLayout {
 
     @JvmOverloads
     fun addItem(item: Item, index: Int? = null) {
-        setItems(listOf(item), index)
+        addItems(listOf(item), index)
     }
 
     @JvmOverloads
     fun addItems(items: Collection<Item>, index: Int? = null) {
-        setItems(items, index)
-    }
-
-
-    private fun setItems(items: Collection<Item>, index: Int? = null) {
         if (isLoading) hideLoading()
         ia.addAll(items, index)
         updateUI()
@@ -262,9 +258,7 @@ class LinearView : FrameLayout {
 
     fun itemPositionBy(compare: Comparable<Item>): Int? = ia.getPosition(compare)
 
-    fun updateItemAt(position: Int, item: Item) {
-        ia.update(position, item)
-    }
+    fun updateItemAt(position: Int, item: Item) = ia.update(position, item)
 
     fun updateItemBy(item: Item) {
         val p = itemPositionBy(item)
