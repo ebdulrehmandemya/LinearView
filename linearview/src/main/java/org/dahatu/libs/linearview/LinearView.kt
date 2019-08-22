@@ -209,7 +209,7 @@ class LinearView : FrameLayout {
     fun addItemDecoration(decoration: RecyclerView.ItemDecoration) =
         rv.addItemDecoration(decoration)
 
-    fun clearItems() {
+    fun clearItems() = post {
         ia.reset()
         updateUI()
         isLoading = false
