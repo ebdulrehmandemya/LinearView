@@ -65,37 +65,32 @@ class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH
         return null
     }
 
-    fun reset() {
+    fun reset() = dlv.post {
         items.clear()
         notItemAddedYet = true
         notifyDataSetChanged()
     }
 
     @JvmOverloads
-    fun add(item: Item, index: Int? = null) {
-        addAll(listOf(item), index)
-    }
-
-    @JvmOverloads
-    fun addAll(items: Collection<Item>, index: Int? = null) {
+    fun addAll(items: Collection<Item>, index: Int? = null) = dlv.post {
         val pos: Int = if (index != null && index >= 0) index else this.items.size
         this.items.addAll(pos, items)
         notItemAddedYet = false
         notifyItemRangeInserted(pos, items.size)
     }
 
-    fun remove(position: Int) {
+    fun remove(position: Int) = dlv.post {
         items.removeAt(position)
         notifyItemRemoved(position)
     }
 
     fun removeLastItem() {
-        if (items.size <= 0) return
-        remove(items.size - 1)
+        if (items.size > 0)
+            remove(items.size - 1)
     }
 
-    fun update(position: Int, item: Item) {
-        items.set(position, item)
+    fun update(position: Int, item: Item) = dlv.post {
+        items[position] = item
         notifyItemChanged(position)
     }
 

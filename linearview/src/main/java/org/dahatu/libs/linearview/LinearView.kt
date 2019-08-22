@@ -11,7 +11,6 @@ import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.properties.Delegates
 
 class LinearView : FrameLayout {
 
@@ -115,13 +114,13 @@ class LinearView : FrameLayout {
         rv.smoothScrollToPosition(position)
     }
 
-    fun startLoading() {
+    fun startLoading() = post {
         isLoading = true
-        ia.add(LoadMore.create())
+        ia.addAll(listOf(LoadMore.create()))
     }
 
-    fun hideLoading() {
-        if (!isLoading) return
+    fun hideLoading() = post {
+        if (!isLoading) return@post
         ia.removeLastItem()
         isLoading = false
     }
@@ -132,18 +131,23 @@ class LinearView : FrameLayout {
 
     @JvmOverloads
     fun addItem(item: Item, index: Int? = null) {
-        addItems(listOf(item), index)
+        setItems(listOf(item), index)
     }
 
     @JvmOverloads
     fun addItems(items: Collection<Item>, index: Int? = null) {
+        setItems(items, index)
+    }
+
+
+    private fun setItems(items: Collection<Item>, index: Int? = null) {
         if (isLoading) hideLoading()
         ia.addAll(items, index)
         updateUI()
     }
 
 
-    fun updateUI() {
+    fun updateUI() = post {
         if (ia.notItemAddedYet)
             dl?.let {
                 showLayout(it.preloadLayout(), PRELOAD_LAYOUT_CODE)
@@ -154,7 +158,7 @@ class LinearView : FrameLayout {
             }
         else {
             val child = getChildAt(0)
-            if (child is RecyclerView) return
+            if (child is RecyclerView) return@post
             showView(rv)
         }
     }
@@ -258,7 +262,9 @@ class LinearView : FrameLayout {
 
     fun itemPositionBy(compare: Comparable<Item>): Int? = ia.getPosition(compare)
 
-    fun updateItemAt(position: Int, item: Item) = ia.update(position, item)
+    fun updateItemAt(position: Int, item: Item) {
+        ia.update(position, item)
+    }
 
     fun updateItemBy(item: Item) {
         val p = itemPositionBy(item)
