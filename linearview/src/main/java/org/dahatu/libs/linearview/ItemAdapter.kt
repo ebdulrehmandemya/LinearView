@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.runBlocking
 
 
 class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH>() {
@@ -78,11 +77,11 @@ class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH
     }
 
     @JvmOverloads
-    fun addAll(items: Collection<Item>, index: Int? = null) = runBlocking {
-        val pos: Int = if (index != null && index >= 0) index else this@ItemAdapter.items.size
-        this@ItemAdapter.items.addAll(pos, items)
+    fun addAll(newItems: Collection<Item>, index: Int? = null)  {
+        val pos: Int = if (index != null && index >= 0) index else items.size
+        items.addAll(pos, newItems)
         notItemAddedYet = false
-        notifyItemRangeInserted(pos, items.size)
+        notifyItemRangeInserted(pos, newItems.size)
     }
 
     fun remove(position: Int) {

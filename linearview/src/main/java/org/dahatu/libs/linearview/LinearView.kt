@@ -60,6 +60,7 @@ class LinearView : FrameLayout {
             ta.recycle()
         }
         ia = ItemAdapter(this)
+        ia.setHasStableIds(true)
         rv = RecyclerView(context)
         rv.let {
             it.id = ViewCompat.generateViewId()
