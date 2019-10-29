@@ -1,5 +1,7 @@
 package org.dahatu.apps.linearviewtest
 
+import android.animation.Animator
+import android.animation.Animator.*
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.AsyncTask
@@ -19,6 +21,7 @@ import org.dahatu.apps.linearviewtest.data.Book
 import org.dahatu.apps.linearviewtest.data.Music
 import org.dahatu.libs.linearview.Item
 import org.dahatu.libs.linearview.LinearView
+import org.dahatu.libs.linearview.OnLoadMoreListener
 import org.dahatu.libs.linearview.OnManageListener
 
 
@@ -40,6 +43,41 @@ class MainActivity : AppCompatActivity(), OnManageListener, OnDeleteItemListener
         Fakeit.init()
 
         dlv.onManageListener(this)
+        dlv.setCustomLoadMoreListener(false, object : OnLoadMoreListener {
+            override fun start() {
+                loading.let {
+                    it.alpha = 0f
+                    it.visibility = View.VISIBLE
+                    it.animate().setDuration(300)
+                        .alpha(1f)
+                        .setListener(null)
+                        .start()
+                }
+            }
+
+            override fun finish() {
+                loading.let {
+                    it.animate().setDuration(300)
+                        .alpha(0f)
+                        .setListener(object : AnimatorListener {
+                            override fun onAnimationRepeat(animation: Animator?) {
+
+                            }
+
+                            override fun onAnimationEnd(animation: Animator?) {
+                                it.visibility = View.GONE
+                            }
+
+                            override fun onAnimationCancel(animation: Animator?) {
+                            }
+
+                            override fun onAnimationStart(animation: Animator?) {
+                            }
+                        })
+                        .start()
+                }
+            }
+        })
         Worker(pause = false).execute();
     }
 
@@ -95,7 +133,6 @@ class MainActivity : AppCompatActivity(), OnManageListener, OnDeleteItemListener
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
     override fun emptyLayout(): Int? = R.layout.empty
 

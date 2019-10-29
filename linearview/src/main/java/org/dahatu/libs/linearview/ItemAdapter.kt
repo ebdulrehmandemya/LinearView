@@ -10,6 +10,11 @@ class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH
 
     private val items = mutableListOf<Item>()
     internal var notItemAddedYet = true
+    public var disableLoadMore = false
+        get() = field
+        set(value) {
+            field = value
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemVH {
         val layout = when (viewType) {
@@ -73,11 +78,12 @@ class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH
 
     @JvmOverloads
     fun add(item: Item, index: Int? = null) {
+        if (disableLoadMore && item.type() == LoadMore.LOAD_MORE_TYPE_ID) return
         addAll(listOf(item), index)
     }
 
     @JvmOverloads
-    fun addAll(newItems: Collection<Item>, index: Int? = null)  {
+    fun addAll(newItems: Collection<Item>, index: Int? = null) {
         val pos: Int = if (index != null && index >= 0) index else items.size
         items.addAll(pos, newItems)
         notItemAddedYet = false
@@ -92,6 +98,15 @@ class ItemAdapter(val dlv: LinearView) : RecyclerView.Adapter<ItemAdapter.ItemVH
     fun removeLastItem() {
         if (items.size > 0)
             remove(items.size - 1)
+    }
+
+    fun removeLoadMore() {
+        if (items.size > 0) {
+            val index = items.size - 1
+            val item = items[index]
+            if (item.type() == LoadMore.LOAD_MORE_TYPE_ID)
+                remove(index)
+        }
     }
 
     fun update(position: Int, item: Item) {

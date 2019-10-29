@@ -27,6 +27,7 @@ class LinearView : FrameLayout {
     internal var dl: OnManageListener? = null
     private var isLoading = false
     private var ipp = 0
+    private var onLoadMoreListener:OnLoadMoreListener? = null
 
     constructor(context: Context)
             : super(context) {
@@ -117,12 +118,14 @@ class LinearView : FrameLayout {
 
     fun startLoading() {
         isLoading = true
+        onLoadMoreListener?.start()
         ia.add(LoadMore.create())
     }
 
     fun hideLoading() {
         if (!isLoading) return
-        ia.removeLastItem()
+        onLoadMoreListener?.finish()
+        ia.removeLoadMore()
         isLoading = false
     }
 
@@ -279,5 +282,10 @@ class LinearView : FrameLayout {
     }
 
     fun notifyUpdatePositions() = ia.notifyDataSetChanged()
+
+    fun setCustomLoadMoreListener(defaultLoadMore: Boolean, onLoadMoreListener: OnLoadMoreListener?){
+        ia.disableLoadMore = defaultLoadMore
+        this.onLoadMoreListener = onLoadMoreListener
+    }
 
 }
